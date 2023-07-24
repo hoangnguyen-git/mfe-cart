@@ -8,18 +8,23 @@ on:
 jobs:
   test_and_build:
     name: Test and Build
-    runs-on: macos-11
+    runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+    # strategy:
+    #   matrix:
+    #     node-version: [14.x]
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
 
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: Install Dependencies
-        run: npm ci
+        run: npm i
 
       - name: Build
         run: npm run build
@@ -33,10 +38,10 @@ jobs:
   dev_delpoy:
     name: Dev Deploy
     needs: test_and_build
-    runs-on: macos-11
+    runs-on: ubuntu-latest
     environment:
       name: dev
-      url: https://cart-mfe-dev.netlify.app
+      url: https://cart-mfe-demo-dev.netlify.app
 
     steps:
       - name: Download Latest Artifact
@@ -63,7 +68,7 @@ jobs:
   staging_delpoy:
     name: Staging Deploy
     needs: dev_delpoy
-    runs-on: macos-11
+    runs-on: ubuntu-latest
     environment:
       name: staging
       url: https://cart-mfe-staging.netlify.app
@@ -93,7 +98,7 @@ jobs:
   prod_delpoy:
     name: Prod Deploy
     needs: staging_delpoy
-    runs-on: macos-11
+    runs-on: ubuntu-latest
     environment:
       name: production
       url: https://cart-mfe.netlify.app
