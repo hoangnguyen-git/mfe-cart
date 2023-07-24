@@ -12,7 +12,7 @@ const devConfig = {
   ],
   entry: {
     cart: './src/index.js',
-    cartWithContainer: './src/index.js'
+    cartWithContainer: './src/indexWithContainer.js'
   },
   output: {
     filename: '[name].bundle.js',
